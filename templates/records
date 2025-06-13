@@ -1,1 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>📊 Student Records</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    h1 { font-size: 2rem; }
+    h2 { margin-top: 40px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    a { color: #007BFF; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
 
+  <h1>📊 Your Records</h1>
+
+  <h2>📝 Lessons</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Topic</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for lesson in lessons %}
+      <tr>
+        <td>{{ lesson.topic }}</td>
+        <td>{{ lesson.created_at }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="2">No lessons found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>🧠 Quizzes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Lesson #</th>
+        <th>Title</th>
+        <th>Score</th>
+        <th>Submitted At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for quiz in quizzes %}
+      <tr>
+        <td>{{ quiz.lesson_number }}</td>
+        <td>{{ quiz.quiz_title }}</td>
+        <td>{{ quiz.score }}</td>
+        <td>{{ quiz.submitted_at }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4">No quiz attempts found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>📂 Assignments</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Deadline</th>
+        <th>File</th>
+        <th>Submitted At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in assignments %}
+      <tr>
+        <td>{{ a.title }}</td>
+        <td>{{ a.deadline }}</td>
+        <td>
+          {% if a.uploaded_file %}
+          <a href="/uploads/{{ a.uploaded_file }}" target="_blank" rel="noopener">{{ a.uploaded_file }}</a>
+          {% else %}
+          No file submitted
+          {% endif %}
+        </td>
+        <td>{{ a.submitted_at }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4">No assignments submitted.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</body>
+</html>
