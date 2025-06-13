@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students Portal - Lessons</title>
+    <link
+      rel="shortcut icon"
+      href="images/lesson-icon.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.8.2/dist/paper.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container container-xs paper">
+      <!-- Go Back Button -->
+      <a href="home.html">
+        <button id="go-back" class="btn">
+          <i class="fas fa-home" style="color: orange"></i>&nbspGo Back
+        </button>
+      </a>
+
+      <!-- Heading -->
+      <div class="text-center">
+        <h2>Lessons</h2>
+      </div>
+
+      <!-- Lesson Options -->
+      <div class="row">
+        <div class="col sm-6 text-center">
+          <a href="https://drive.google.com/drive/folders/1FXzmyUQQ25aV88klLNt3snpqU42DKhKT" target="_blank">
+            <button class="btn btn-success-outline btn-large">
+              <i class="fas fa-folder-open fa-lg"></i>&nbsp View Uploaded Lessons
+            </button>
+          </a>
+        </div>
+
+        <div class="col sm-6 text-center">
+          <button onclick="generateLesson()" class="btn btn-primary-outline btn-large">
+            <i class="fas fa-robot fa-lg"></i>&nbsp Generate New Lesson
+          </button>
+        </div>
+      </div>
+
+      <!-- AI Lesson Input -->
+      <div class="form-group mt-4">
+        <label for="lesson-topic">Enter a Topic:</label>
+        <input class="input-block" type="text" id="lesson-topic" placeholder="e.g., Newton's Laws of Motion" />
+      </div>
+
+      <!-- Generated Content -->
+      <div class="form-group">
+        <label for="lesson-output">Generated Lesson:</label>
+        <textarea class="input-block" id="lesson-output" rows="10" readonly></textarea>
+      </div>
+    </div>
+
+    <script>
+     async function generateLesson() {
+  const topic = document.getElementById("lesson-topic").value.trim();
+  const output = document.getElementById("lesson-output");
+  const email = localStorage.getItem("userEmail");  // ✅ fetch from localStorage
+
+  if (!topic) {
+    alert("Please enter a topic.");
+    return;
+  }
+
+  output.value = "Generating content, please wait...";
+
+  try {
+    const response = await fetch("http://localhost:5000/generate_lesson", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ topic, email })  // ✅ send email with topic
+    });
+
+    const data = await response.json();
+    if (data.content) {
+      output.value = data.content;
+    } else {
+      output.value = "Something went wrong. Try again.";
+    }
+  } catch (error) {
+    output.value = "Error generating lesson. Please try again.";
+    console.error(error);
+  }
+}
+    </script>
+  </body>
+</html>

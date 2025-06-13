@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login & Sign Up - Students Portal</title>
+  <link rel="stylesheet" href="https://unpkg.com/papercss@1.8.2/dist/paper.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+  />
+  <style>
+    /* Center container vertically & horizontally */
+    body, html {
+      height: 100%;
+      margin: 0;
+      background: #ffffff;
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Muli', sans-serif;
+    }
+    .main-container {
+      width: 350px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      padding: 0;
+    }
+    /* Toggle Buttons Container */
+    .form-toggle {
+      display: flex;
+      background: #ffffff;
+      border-bottom: 1px solid #ccc;
+    }
+    .form-toggle button {
+      flex: 1;
+      border-radius: 0;
+      font-weight: 600;
+      border: none;
+      padding: 12px 0;
+      font-size: 16px;
+      cursor: pointer;
+      background: transparent;
+      color: #000;
+      transition: background 0.3s;
+    }
+    .form-toggle button.active,
+    .form-toggle button:hover {
+      background: #4caf50;
+      color: white;
+    }
+    /* Form container: two forms side by side for sliding */
+    .form-container {
+      display: flex;
+      width: 200%;
+      transition: transform 0.6s ease-in-out;
+    }
+    .form-body {
+      width: 50%;
+      padding: 25px 30px;
+      box-sizing: border-box;
+      background: #ffffff;
+      color: #000;
+    }
+    .form-body h2.title {
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-align: center;
+      color: #000;
+    }
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+      display: block;
+      color: #000;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 8px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #666;
+      background: #fff;
+      color: #000;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #4caf50;
+      background: #f0fff0;
+    }
+    input[type="submit"] {
+      width: 100%;
+      background: #4caf50;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+      box-sizing: border-box;
+    }
+    input[type="submit"]:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container paper">
+    <div class="form-toggle">
+      <button id="loginBtn" class="active" onclick="showLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <button id="signupBtn" onclick="showSignup()"><i class="fas fa-user-plus"></i> Sign Up</button>
+    </div>
+
+    <div id="form-slider" class="form-container">
+      <!-- Login Form -->
+      <div class="form-body">
+        <h2 class="title">Log In</h2>
+        <form onsubmit="return validateLogin(event)" class="the-form" novalidate>
+          <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="loginEmail" placeholder="Enter your email" required />
+          <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required />
+          <input type="submit" value="Log In" />
+        </form>
+      </div>
+
+      <!-- Signup Form -->
+      <div class="form-body">
+        <h2 class="title">Create Account</h2>
+        <form onsubmit="return validateSignup(event)" class="the-form" novalidate>
+          <label for="signupName"><i class="fas fa-user"></i> Name</label>
+          <input type="text" id="signupName" placeholder="Enter your name" required />
+          <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="signupEmail" placeholder="Enter your email" required />
+          <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="signupPassword" placeholder="Create password" required />
+          <input type="submit" value="Sign Up" />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const formSlider = document.getElementById('form-slider');
+
+    function showLogin() {
+      formSlider.style.transform = 'translateX(0%)';
+      loginBtn.classList.add('active');
+      signupBtn.classList.remove('active');
+    }
+
+    function showSignup() {
+      formSlider.style.transform = 'translateX(-50%)';
+      signupBtn.classList.add('active');
+      loginBtn.classList.remove('active');
+    }
+
+    async function validateLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert(result.message);
+        localStorage.setItem('userEmail', email); // ✅ Store email in localStorage
+        window.location.href = 'home.html'; // Redirect to dashboard
+      } else {
+        alert(result.message);
+      }
+    }
+
+    async function validateSignup(event) {
+      event.preventDefault();
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value.trim();
+
+      const response = await fetch('http://localhost:5000/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert(result.message);
+        showLogin(); // Switch to login view
+      } else {
+        alert(result.message);
+      }
+    }
+  </script>
+</body>
+</html>

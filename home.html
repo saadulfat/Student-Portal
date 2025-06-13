@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students Portal - Home</title>
+    <link rel="shortcut icon" href="images/home.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.8.2/dist/paper.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container paper">
+      <div style="text-align: right; margin-top: 10px;">
+        <button class="btn btn-danger-outline" onclick="logoutUser()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+      <div class="text-center">
+        <h2 id="main-heading">
+          Student Portal
+        </h2>
+      </div>
+      <div class="row">
+        <!-- ********************* LESSONS ********************* -->
+        <div class="sm-12 md-6 lg-4 col">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">
+                <span><i class="fas fa-calculator" style="color: orange"></i></span>
+                Lessons
+              </h4>
+              <h5 class="card-subtitle"></h5>
+              <a href="lesson.html">
+                <button class="btn-block btn-warning-outline">
+                 Lessons
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- ***************** QUIZ List ******************* -->
+        <div class="sm-12 md-6 lg-4 col">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">
+                <span><i class="fas fa-tasks" style="color: red"></i></span>
+                Quiz
+              </h4>
+              <h5 class="card-subtitle"></h5>
+              <a href="quiz.html">
+                <button class="btn-block btn-danger-outline">
+                  Quiz
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- ****************** ASSIGNMENT ********************* -->
+        <div class="sm-12 md-6 lg-4 col">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">
+                <span><i class="fas fa-clock" style="color: slateblue"></i></span>
+                Assignment
+              </h4>
+              <h5 class="card-subtitle"></h5>
+              <a href="assignment.html">
+                <button class="btn-block btn-secondary-outline">
+                  Assignment
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- ******************* RECORDS ************************ -->
+        <div class="sm-12 md-6 lg-4 col">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">
+                <span><i class="fas fa-pencil-alt" style="color: yellowgreen"></i></span>
+                Records
+              </h4>
+              <h5 class="card-subtitle"></h5>
+              <a id="records-link" href="#">
+                <button class="btn-block btn-success-outline">
+                  Records
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- ******************** About ***************** -->
+        <div class="sm-12 md-6 lg-4 col">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">
+                <span><i class="fas fa-info-circle" style="color: rgb(226, 27, 233);"></i></span>
+                About
+              </h4>
+              <h5 class="card-subtitle"></h5>
+              <a href="about.html">
+                <button class="btn-block btn-purple-outline">
+                  Project Overview
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Set the records link with the user's email from localStorage
+      const email = localStorage.getItem('userEmail');
+      const recordsLink = document.getElementById('records-link');
+      if (email) {
+        recordsLink.href = `/records?email=${encodeURIComponent(email)}`;
+      } else {
+        recordsLink.onclick = function() {
+          alert('Please log in first!');
+          return false;
+        }
+      }
+
+      // Logout function
+      function logoutUser() {
+        localStorage.removeItem('userEmail');
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>

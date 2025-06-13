@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Portal - About</title>
+    <link rel="shortcut icon" href="./images/info.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.8.2/dist/paper.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <style>
+      h3 {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container container-md paper" id="main-container">
+      <a href="home.html">
+        <button id="go-back" class="btn">
+          <i class="fas fa-home" style="color: orange"></i>&nbsp;Go Back
+        </button>
+      </a>
+      <article class="article">
+        <h1 class="article-title">Student Portal</h1>
+        <p>
+          <strong>Student Portal</strong> is a comprehensive dashboard for students to organize, learn, and track their academic activities in one place. The portal combines traditional productivity tools with AI-powered features to enhance the learning experience.
+        </p>
+
+        <h3>Key Features</h3>
+        <ul>
+          <li><strong>Lessons:</strong> View and generate lessons, including AI-generated content for any topic.</li>
+          <li><strong>Quizzes:</strong> Attempt scheduled class quizzes and generate practice quizzes using AI. Practice quizzes provide instant feedback and scoring.</li>
+          <li><strong>Assignments:</strong> Submit scheduled assignments and practice with AI-generated assignments for self-assessment.</li>
+          <li><strong>Records:</strong> Track your lesson history, quiz scores, and assignment submissions. Only scheduled/class activities are recorded for progress tracking.</li>
+
+        <h3>How It Works</h3>
+        <ul>
+          <li><strong>Backend:</strong> Built with Flask and MySQL, handling user authentication, data storage, and record management.</li>
+          <li><strong>AI Integration:</strong> Uses OpenAI (via OpenRouter) to generate lessons, quizzes, and assignments on demand. AI-generated practice activities are for self-study and not stored in records.</li>
+          <li><strong>Frontend:</strong> Responsive interface using HTML, CSS, PaperCSS, and JavaScript for a smooth user experience.</li>
+        </ul>
+
+        <h3>Technologies Used</h3>
+        <ul class="inline">
+          <li>HTML</li>
+          <li>CSS (PaperCSS)</li>
+          <li>JavaScript</li>
+          <li>Python (Flask)</li>
+          <li>MySQL</li>
+          <li>OpenAI API</li>
+        </ul>
+
+        <h3>Tools & Resources</h3>
+        <ol>
+          <li>Paper CSS</li>
+          <li>Font Awesome Icons</li>
+          <li>Flaticon Image Icons</li>
+          <li>OpenAI (via OpenRouter) for AI-powered content</li>
+        </ol>
+
+        <h3>Project Purpose</h3>
+        <p>
+          The Student Portal aims to streamline academic management for students, combining essential tools and AI-powered learning in a single platform. It is designed to be extensible, with plans to add more APIs (e.g., Wikipedia, Dictionary, Language Translator) and fun features like games in the future.
+        </p>
+
+        <h3>Future Plans</h3>
+        <ul>
+          <li>Integrate more APIs for reference and learning.</li>
+          <li>Add multiplayer and interactive games for engagement.</li>
+          <li>Enhance analytics and progress tracking.</li>
+          <li>Enable notifications and reminders for assignments and quizzes.</li>
+        </ul>
+      </article>
+    </div>
+  </body>
+</html>

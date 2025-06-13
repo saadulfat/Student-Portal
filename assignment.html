@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students Portal - Assignments</title>
+    <link
+      rel="shortcut icon"
+      href="images/assignment-icon.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/papercss@1.8.2/dist/paper.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container container-xs paper">
+      <a href="home.html">
+        <button id="go-back" class="btn">
+          <i class="fas fa-home" style="color: orange"></i>&nbspGo Back
+        </button>
+      </a>
+
+      <div class="text-center">
+        <h2>Assignments</h2>
+      </div>
+
+      <!-- Tabs -->
+      <div class="row">
+        <div class="col sm-6 text-center">
+          <button class="btn btn-success-outline btn-large" onclick="showTab('scheduled')">
+            <i class="fas fa-calendar-check"></i>&nbsp Scheduled Assignments
+          </button>
+        </div>
+        <div class="col sm-6 text-center">
+          <button class="btn btn-primary-outline btn-large" onclick="showTab('practice')">
+            <i class="fas fa-brain"></i>&nbsp Practice Assignment
+          </button>
+        </div>
+      </div>
+
+      <!-- Scheduled Assignments -->
+      <div id="scheduled" class="mt-4" style="display: none">
+        <h5>Scheduled Assignments</h5>
+        <div id="assignment-list"></div>
+      </div>
+
+      <!-- Practice Assignment -->
+      <div id="practice" class="mt-4" style="display: none">
+        <h5>Practice Assignment</h5>
+        <div class="form-group">
+          <label for="practice-topic">Enter a Topic:</label>
+          <input class="input-block" type="text" id="practice-topic" placeholder="e.g., Photosynthesis" />
+        </div>
+        <button class="btn btn-primary-outline" onclick="generatePracticeAssignment()">Generate</button>
+
+        <div class="form-group mt-3">
+          <label>Generated Question:</label>
+          <textarea class="input-block" id="practice-question" rows="5" readonly></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Your Answer:</label>
+          <textarea class="input-block" id="practice-answer" rows="5"></textarea>
+        </div>
+
+        <button class="btn btn-success-outline" onclick="evaluatePracticeAssignment()">Evaluate</button>
+
+        <div class="form-group mt-3">
+          <label>Feedback:</label>
+          <textarea class="input-block" id="feedback" rows="5" readonly></textarea>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showTab(tab) {
+        document.getElementById('scheduled').style.display = tab === 'scheduled' ? 'block' : 'none';
+        document.getElementById('practice').style.display = tab === 'practice' ? 'block' : 'none';
+
+        if (tab === 'scheduled') {
+          loadScheduledAssignments();
+        }
+      }
+
+      async function loadScheduledAssignments() {
+        const response = await fetch("http://localhost:5000/get_scheduled_assignments");
+        const assignments = await response.json();
+        const container = document.getElementById("assignment-list");
+        container.innerHTML = '';
+
+        if (assignments.length === 0) {
+          container.innerHTML = '<p>No assignments available.</p>';
+          return;
+        }
+
+        assignments.forEach(assignment => {
+          container.innerHTML += `
+            <div class="paper p-2 mt-2">
+              <p><strong>${assignment.title}</strong></p>
+              <p>${assignment.description}</p>
+              <p>Deadline: ${new Date(assignment.deadline).toLocaleString()}</p>
+              <a class="btn btn-sm" href="http://localhost:5000/get_assignment_pdf/${assignment.pdf_filename}" target="_blank">
+                <i class="fas fa-file-pdf"></i> View PDF
+              </a>
+              <div class="form-group mt-1">
+                <label>Upload Solution:</label>
+                <input type="file" onchange="submitAssignment(${assignment.id}, this)" />
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      async function submitAssignment(assignmentId, fileInput) {
+        const file = fileInput.files[0];
+        const email = localStorage.getItem("userEmail");
+        if (!file || !email) {
+          alert("Missing file or user email.");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("assignment_id", assignmentId);
+        formData.append("user_email", email);
+        formData.append("file", file);
+
+        const response = await fetch("http://localhost:5000/submit_assignment", {
+          method: "POST",
+          body: formData
+        });
+
+        const result = await response.json();
+        alert(result.message);
+      }
+
+      async function generatePracticeAssignment() {
+        const topic = document.getElementById("practice-topic").value.trim();
+        if (!topic) return alert("Enter a topic.");
+
+        const res = await fetch("http://localhost:5000/generate_practice_assignment", {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic })
+        });
+
+        const data = await res.json();
+        document.getElementById("practice-question").value = data.question || "Error generating.";
+      }
+
+      async function evaluatePracticeAssignment() {
+        const question = document.getElementById("practice-question").value;
+        const answer = document.getElementById("practice-answer").value;
+
+        const res = await fetch("http://localhost:5000/evaluate_practice_assignment", {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, answer })
+        });
+
+        const data = await res.json();
+        document.getElementById("feedback").value = data.feedback || "Error in evaluation.";
+      }
+    </script>
+  </body>
+</html>

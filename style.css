@@ -1,0 +1,25 @@
+/* *********** To have a pro=ivate button ************** */
+button.btn-purple-outline {
+  background-color: white;
+  color: rgb(226, 27, 233);
+  border-color: rgb(232, 162, 235);
+}
+
+button.btn-purple-outline:hover {
+  background-color: rgb(235, 209, 236);
+  border-color: rgb(226, 24, 233);
+}
+
+/* ************** Some basic styling **************** */
+#main-heading {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#main-slogan {
+  margin-top: 10px;
+}
+
+.container {
+  padding-top: 0;
+}
