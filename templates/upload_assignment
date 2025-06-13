@@ -1,0 +1,28 @@
+<!-- ADBMS PROJECT/upload_assignment.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Assignment (Admin)</title>
+</head>
+<body>
+    <h2>Upload Assignment</h2>
+    <form action="/admin/upload_assignment" method="post" enctype="multipart/form-data">
+        <label>Lesson Number:</label><br>
+        <input type="text" name="lesson_number" required><br><br>
+
+        <label>Title:</label><br>
+        <input type="text" name="title" required><br><br>
+
+        <label>Description:</label><br>
+        <textarea name="description" required></textarea><br><br>
+
+        <label>Deadline:</label><br>
+        <input type="datetime-local" name="deadline" required><br><br>
+
+        <label>Assignment File (PDF):</label><br>
+        <input type="file" name="pdf_file" accept="application/pdf" required><br><br>
+
+        <input type="submit" value="Upload">
+    </form>
+</body>
+</html>
